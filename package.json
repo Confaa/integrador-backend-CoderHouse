@@ -1,0 +1,27 @@
+{
+  "type": "module",
+  "name": "integrador-backend-coderhouse",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha src/test/**/*.test.js",
+    "start-dev": "nodemon src/app.js --mode dev",
+    "start-prod": "nodemon src/app.js --mode prod",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,css,scss,handlebars}\""
+  },
+  "author": "confaa",
+  "license": "ISC",
+  "dependencies": {
+    "@faker-js/faker": "^8.3.1",
+    "commander": "^11.1.0",
+    "dotenv": "^16.3.1",
+    "eslint-plugin-import": "^2.29.1",
+    "express": "^4.18.2",
+    "nodemon": "^3.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "prettier": "^3.1.1"
+  }
+}

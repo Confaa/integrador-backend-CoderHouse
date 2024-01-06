@@ -1,0 +1,101 @@
+[
+  {
+    "id": "15f3837d-e44e-40e7-a4db-5461dfde6e33",
+    "title": "Intelligent Fresh Fish",
+    "description": "New range of formal shirts are designed keeping you in mind. With fits and styling that will make you stand apart",
+    "price": 719.6361529438291,
+    "thumbnail": "14573d1d-955d-4695-a705-9511467fe63e",
+    "code": "3OFfrdBRV8mDDlY",
+    "stock": 93,
+    "status": true,
+    "category": "Outdoors"
+  },
+  {
+    "id": "d9136bbd-1ea1-481d-bbcc-3933f17c54a8",
+    "title": "Small Steel Chips",
+    "description": "The Apollotech B340 is an affordable wireless mouse with reliable connectivity, 12 months battery life and modern design",
+    "price": 704.2544786424842,
+    "thumbnail": "7825e7b7-917c-434b-8a7b-1c82c76322e3",
+    "code": "gtoGU4APY44I_YJ",
+    "stock": 73,
+    "status": true,
+    "category": "Kids"
+  },
+  {
+    "id": "5901fdbb-a4b8-435d-9d0a-04ad563966d2",
+    "title": "Sleek Cotton Chair",
+    "description": "The Nagasaki Lander is the trademarked name of several series of Nagasaki sport bikes, that started with the 1984 ABC800J",
+    "price": 823.7891086826567,
+    "thumbnail": "cc170153-1751-4e2f-a3ae-df78161346d6",
+    "code": "em2BUpswtEb69p9",
+    "stock": 31,
+    "status": false,
+    "category": "Clothing"
+  },
+  {
+    "id": "6277d600-f308-487b-938e-f3893be77f02",
+    "title": "Generic Cotton Bacon",
+    "description": "The slim & simple Maple Gaming Keyboard from Dev Byte comes with a sleek body and 7- Color RGB LED Back-lighting for smart functionality",
+    "price": 614.3159425286576,
+    "thumbnail": "712144ed-9913-4e59-972a-a51093c82f6b",
+    "code": "VCcGrRxgygTNOmt",
+    "stock": 22,
+    "status": true,
+    "category": "Health"
+  },
+  {
+    "id": "076ffce3-3b78-4b13-8402-d2cf935a57bb",
+    "title": "Sleek Frozen Tuna",
+    "description": "The beautiful range of Apple Naturalé that has an exciting mix of natural ingredients. With the Goodness of 100% Natural Ingredients",
+    "price": 886.2419464150444,
+    "thumbnail": "a640ac25-254d-4e2b-951b-94257d92f332",
+    "code": "AYM1Tzs_9wNAgIK",
+    "stock": 25,
+    "status": true,
+    "category": "Garden"
+  },
+  {
+    "id": "c3f5d6f1-c5a9-4648-8f81-fa7c81f90e0f",
+    "title": "Rustic Wooden Sausages",
+    "description": "The Football Is Good For Training And Recreational Purposes",
+    "price": 792.6092927653808,
+    "thumbnail": "3c02ed38-3387-4cd5-a049-35f62bf63b0a",
+    "code": "7W1P2cbU8SI9o1o",
+    "stock": 73,
+    "status": false,
+    "category": "Shoes"
+  },
+  {
+    "id": "9083503b-6dc6-4ee6-85f0-a045e583b3bf",
+    "title": "Generic Bronze Soap",
+    "description": "Boston's most advanced compression wear technology increases muscle oxygenation, stabilizes active muscles",
+    "price": 366.52041031466797,
+    "thumbnail": "c1090e20-b543-4b25-808f-00343e8276c5",
+    "code": "sn6kjpsuI6EcwJx",
+    "stock": 72,
+    "status": false,
+    "category": "Sports"
+  },
+  {
+    "id": "47b4a290-3dc8-4493-b55d-55df7330edbb",
+    "title": "Oriental Plastic Mouse",
+    "description": "Ergonomic executive chair upholstered in bonded black leather and PVC padded seat and back for all-day comfort and support",
+    "price": 434.63896838459186,
+    "thumbnail": "1a727535-51ad-49f9-a712-b2e97f215aa8",
+    "code": "Vtvdskdc17QTvas",
+    "stock": 22,
+    "status": false,
+    "category": "Health"
+  },
+  {
+    "id": "3c1dcced-4900-4c34-a041-52e3f91efd50",
+    "title": "Refined Steel Mouse",
+    "description": "The automobile layout consists of a front-engine design, with transaxle-type transmissions mounted at the rear of the engine and four wheel drive",
+    "price": 650.4606287765782,
+    "thumbnail": "cce2d496-2926-4585-8bc4-56c6a9734e7d",
+    "code": "HZMSxAjovNkEK4p",
+    "stock": 41,
+    "status": true,
+    "category": "Electronics"
+  }
+]
