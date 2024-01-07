@@ -37,4 +37,12 @@ export default class ProductRepository {
       return error;
     }
   };
+
+  getProductsWithParams = async (limit, page, query, value, sort) => {
+    try {
+      return await this.dao.getWithParams(limit, page, query, value, sort);
+    } catch (error) {
+      return error;
+    }
+  };
 }

@@ -16,9 +16,9 @@ export default class CartRepository {
       return error;
     }
   };
-  getCartById = async (pid) => {
+  getCartById = async (cid) => {
     try {
-      return await this.dao.getById(pid);
+      return await this.dao.getById(cid);
     } catch (error) {
       return error;
     }
@@ -26,6 +26,27 @@ export default class CartRepository {
   addProductToCart = async (cid, pid, quantity) => {
     try {
       return await this.dao.addToCart(cid, pid, quantity);
+    } catch (error) {
+      return error;
+    }
+  };
+  deleteProductToCart = async (cid, pid) => {
+    try {
+      return await this.dao.deleteToCart(cid, pid);
+    } catch (error) {
+      return error;
+    }
+  };
+  updateCart = async (cid, products) => {
+    try {
+      return await this.dao.update(cid, products);
+    } catch (error) {
+      return error;
+    }
+  };
+  updateProductFromCart = async (cid, pid, quantity) => {
+    try {
+      return await this.dao.updateToCart(cid, pid, quantity);
     } catch (error) {
       return error;
     }

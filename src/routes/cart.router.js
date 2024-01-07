@@ -5,6 +5,7 @@ import {
   getCartById,
   getCarts,
   addProductToCart,
+  deleteProductToCart,
 } from "../controllers/cart.controller.js";
 
 // Create Express router
@@ -15,6 +16,7 @@ router.post("/mocking", mockingCarts);
 router.get("/", getCarts);
 router.get("/:cid", getCartById);
 router.post("/:cid/product/:pid", addProductToCart);
+router.delete("/:cid/product/:pid", deleteProductToCart);
 
 // Export router
 

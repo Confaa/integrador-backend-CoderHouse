@@ -1,17 +1,57 @@
-import { productService } from "../dao/repositories/index.js";
-import ProductDTO from "../dao/dto/product.dto.js";
+import { productService } from "../repositories/index.js";
+import ProductDTO from "../dto/product.dto.js";
 import { generateProducts } from "../utils/fakerUtil.js";
+import config from "../config/env.config.js";
 export const getAllProducts = async (req, res) => {
   try {
-    let { limit } = req.query;
-    const result = await productService.getAllProducts();
+    let { limit, page, sort, query, value } = req.query;
+
+    if (!limit) {
+      limit = 10;
+    }
+
+    if (page) {
+      page = parseInt(page);
+    } else {
+      page = 1;
+    }
+
+    const result = await productService.getProductsWithParams(
+      limit,
+      page,
+      query,
+      value,
+      sort,
+    );
+
     if (result.length === 0) {
       return res.status(404).json({ message: "No products found" });
     }
-    if (!limit) {
-      return res.status(200).json({ products: result });
-    }
-    return res.status(200).json({ products: result.slice(0, limit) });
+
+    return res.status(200).json({
+      status: "success",
+      payload: result.docs,
+      totalPages: result.totalPages,
+      prevPage: result.prevPage,
+      nextPage: result.nextPage,
+      page: result.page,
+      hasPrevPage: result.hasPrevPage,
+      hasNextPage: result.hasNextPage,
+      prevLink: result.hasPrevPage
+        ? `http://localhost:${config.PORT}/products?limit=${limit}&page=${
+            result.prevPage
+          }${query ? `&query=${query}&value=${value}` : ""}${
+            sort ? `&sort=${sort}` : ""
+          }`
+        : null,
+      nextLink: result.hasNextPage
+        ? `http://localhost:${config.PORT}/products?limit=${limit}&page=${
+            result.nextPage
+          }${query ? `&query=${query}&value=${value}` : ""}${
+            sort ? `&sort=${sort}` : ""
+          }`
+        : null,
+    });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }

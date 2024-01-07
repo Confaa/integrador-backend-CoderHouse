@@ -1,5 +1,5 @@
-import { cartService } from "../dao/repositories/index.js";
-import CartDTO from "../dao/dto/cart.dto.js";
+import { cartService } from "../repositories/index.js";
+import CartDTO from "../dto/cart.dto.js";
 import { generateCarts } from "../utils/fakerUtil.js";
 export const addCart = async (req, res) => {
   try {
@@ -20,8 +20,9 @@ export const getCarts = async (req, res) => {
 };
 
 export const getCartById = async (req, res) => {
+  const { cid } = req.params;
   try {
-    const result = await cartService.getCartById(req.params.id);
+    const result = await cartService.getCartById(cid);
     res.status(200).json({ cart: result });
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -40,11 +41,40 @@ export const mockingCarts = async (req, res) => {
 export const addProductToCart = async (req, res) => {
   try {
     const { quantity } = req.body;
-    const result = await cartService.addProductToCart(
-      req.params.id,
-      req.params.pid,
-      quantity ?? 1,
-    );
+    const { cid, pid } = req.params;
+
+    const result = await cartService.addProductToCart(cid, pid, quantity ?? 1);
+    res.status(201).json({ cart: result });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+export const deleteProductToCart = async (req, res) => {
+  const { cid, pid } = req.params;
+  try {
+    const result = await cartService.deleteProductToCart(cid, pid);
+    res.status(201).json({ cart: result });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export const updateCart = async (req, res) => {
+  try {
+    const { cid } = req.params;
+    const { products } = req.body;
+    const result = await cartService.updateCart(cid, products);
+    res.status(200).json({ cart: result });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export const updateProductFromCart = async (req, res) => {
+  const { cid, pid } = req.params;
+  const { quantity } = req.body;
+  try {
+    const result = await cartService.updateProductFromCart(cid, pid, quantity);
     res.status(201).json({ cart: result });
   } catch (error) {
     res.status(404).json({ message: error.message });
