@@ -42,8 +42,9 @@ export const getProductsPage = async (req, res) => {
           }`
         : null,
       cartId: cart._id,
+      user: req.user,
     });
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.sendClientError({ message: error.message });
   }
 };

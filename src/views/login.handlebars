@@ -1,0 +1,47 @@
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <form
+    class="p-10 bg-white rounded-lg shadow-lg max-w-md w-full mx-auto space-y-6"
+    onsubmit="login(event)"
+  >
+    <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Login</h1>
+    <div class="mb-4">
+      <input
+        name="email"
+        type="text"
+        placeholder="Email"
+        class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent"
+      />
+    </div>
+    <div class="mb-4">
+      <input
+        name="password"
+        type="password"
+        placeholder="Password"
+        class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-transparent"
+      />
+    </div>
+    <button
+      type="submit"
+      class="w-full bg-indigo-600 text-white font-bold py-3 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-50 transition duration-300"
+    >
+      Login
+    </button>
+    <a
+      href="/register"
+      class="block text-center w-full bg-gray-300 text-gray-700 font-semibold py-3 rounded-lg hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50 transition duration-300"
+    >
+      Register
+    </a>
+  </form>
+</div>
+<script src="/js/login.js"></script>
+{{#if failSession}}
+  <script>
+    alert("Session expired, please login again");
+  </script>
+{{/if}}
+{{#if logout}}
+  <script>
+    alert("Logout success");
+  </script>
+{{/if}}

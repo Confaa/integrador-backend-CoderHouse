@@ -1,8 +1,8 @@
-import { Router } from "express";
 import { getProductsPage } from "../controllers/productView.controller.js";
+import RouterBase from "./router.js";
 
-const router = Router();
-
-router.get("/", getProductsPage);
-
-export default router;
+export default class ProductRouterView extends RouterBase {
+  init() {
+    this.get("/", ["USER", "PREMIUM", "ADMIN"], getProductsPage);
+  }
+}

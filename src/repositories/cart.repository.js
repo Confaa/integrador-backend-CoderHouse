@@ -51,4 +51,11 @@ export default class CartRepository {
       return error;
     }
   };
+  purchaseCart = async (cid) => {
+    try {
+      return await this.dao.purchase(cid);
+    } catch (error) {
+      return error;
+    }
+  };
 }

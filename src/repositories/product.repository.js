@@ -23,9 +23,9 @@ export default class ProductRepository {
       return error;
     }
   };
-  updateProduct = async (product) => {
+  updateProduct = async (pid, product) => {
     try {
-      return await this.dao.update(product);
+      return await this.dao.update(pid, product);
     } catch (error) {
       return error;
     }

@@ -16,6 +16,7 @@ const itemsSchema = new mongoose.Schema({
 
 const cartSchema = new mongoose.Schema({
   products: { type: [itemsSchema], required: true },
+  purchased: { type: Boolean, default: false },
 });
 
 //Populate the products field with the product data

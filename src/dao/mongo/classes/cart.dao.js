@@ -38,7 +38,7 @@ export class Cart {
     try {
       return await cartModel.updateOne(
         { _id: cid },
-        { $pull: { products: { id: pid } } },
+        { $pull: { products: { product: pid } } },
       );
     } catch (error) {
       console.log(error);
@@ -48,7 +48,7 @@ export class Cart {
     try {
       return await cartModel.updateOne(
         { _id: cid },
-        { $set: { products: products } },
+        { $set: { products } },
       );
     } catch (error) {
       console.log(error);
@@ -59,6 +59,16 @@ export class Cart {
       return await cartModel.updateOne(
         { _id: cid, "products.id": pid },
         { $set: { "products.$.quantity": quantity } },
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  purchase = async (cid) => {
+    try {
+      return await cartModel.updateOne(
+        { _id: cid },
+        { $set: { purchased: true } },
       );
     } catch (error) {
       console.log(error);

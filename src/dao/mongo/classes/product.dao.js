@@ -1,4 +1,3 @@
-import ProductDTO from "../../../dto/product.dto.js";
 import { productModel } from "../models/product.model.js";
 
 export class Product {
@@ -32,12 +31,9 @@ export class Product {
       console.log(error);
     }
   };
-  update = async (product) => {
+  update = async (pid, product) => {
     try {
-      return await productModel.updateOne(
-        { _id: product.id },
-        new ProductDTO(product),
-      );
+      return await productModel.updateOne({ _id: pid }, product);
     } catch (error) {
       console.log(error);
     }

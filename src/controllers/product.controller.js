@@ -1,6 +1,6 @@
 import { productService } from "../repositories/index.js";
 import ProductDTO from "../dto/product.dto.js";
-import { generateProducts } from "../utils/fakerUtil.js";
+import { generateProducts } from "../utils/faker.utils.js";
 import config from "../config/env.config.js";
 export const getAllProducts = async (req, res) => {
   try {
@@ -25,10 +25,9 @@ export const getAllProducts = async (req, res) => {
     );
 
     if (result.length === 0) {
-      return res.status(404).json({ message: "No products found" });
+      res.sendNotFound("No products found");
     }
-
-    return res.status(200).json({
+    res.sendSuccess({
       status: "success",
       payload: result.docs,
       totalPages: result.totalPages,
@@ -53,7 +52,7 @@ export const getAllProducts = async (req, res) => {
         : null,
     });
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.sendClientError({ message: error.message });
   }
 };
 
@@ -61,27 +60,27 @@ export const getProductById = async (req, res) => {
   try {
     const { pid } = req.params;
     const result = await productService.getProductById(pid);
-    res.status(200).json({ product: result });
+    res.sendSuccess({ product: result });
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.sendClientError(error.message);
   }
 };
 
 export const addProduct = async (req, res) => {
   try {
     const result = await productService.addProduct(new ProductDTO(req.body));
-    res.status(201).json({ product: result });
+    res.sendSuccessCreated({ product: result });
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.sendClientError(error.message);
   }
 };
 
 export const mockingProducts = async (req, res) => {
   try {
     await generateProducts();
-    res.status(201).json({ message: "Products created" });
+    res.sendSuccessCreated({ message: "Products created" });
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.sendClientError({ message: error.message });
   }
 };
 
@@ -92,9 +91,9 @@ export const updateProduct = async (req, res) => {
       throw new Error("Missing pid");
     }
     const result = await productService.updateProduct({ ...req.body, id: pid });
-    res.status(200).json({ product: result });
+    res.sendSuccess({ product: result });
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.sendClientError({ message: error.message });
   }
 };
 export const deleteProduct = async (req, res) => {
@@ -104,8 +103,8 @@ export const deleteProduct = async (req, res) => {
       throw new Error("Missing pid");
     }
     const result = await productService.deleteProduct(pid);
-    res.status(200).json({ product: result });
+    res.sendSuccess({ product: result });
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.sendClientError({ message: error.message });
   }
 };

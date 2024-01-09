@@ -1,4 +1,3 @@
-import { Router } from "express";
 import {
   getAllProducts,
   getProductById,
@@ -8,17 +7,15 @@ import {
   deleteProduct,
 } from "../controllers/product.controller.js"; // Import the missing function
 import { missingFields } from "../middlewares/missingFields.middleware.js";
+import RouterBase from "./router.js";
 
-// Create Express router
-const router = Router();
-
-// Endpoint: GET /api/products
-router.get("/", getAllProducts);
-router.get("/:pid", getProductById);
-router.post("/", missingFields, addProduct);
-router.post("/mocking", mockingProducts);
-router.put("/:pid", updateProduct);
-router.delete("/:pid", deleteProduct);
-// Export router
-
-export default router;
+export default class ProductRouter extends RouterBase {
+  init() {
+    this.get("/", ["USER"], getAllProducts);
+    this.get("/:pid", ["USER"], getProductById);
+    this.post("/", ["ADMIN"], missingFields, addProduct);
+    this.post("/mocking", ["ADMIN"], mockingProducts);
+    this.put("/:pid", ["ADMIN"], updateProduct);
+    this.delete("/:pid", ["ADMIN"], deleteProduct);
+  }
+}

@@ -1,43 +1,80 @@
+
 <h1 class="text-3xl font-bold mb-6 text-gray-900">Products</h1>
-<a href="/carts/{{cartId}}" class="bg-indigo-500 hover:bg-indigo-600 text-white transition duration-300 ease-in-out font-medium rounded-md text-lg py-2 px-4 inline-flex items-center">
+<a href="/carts/{{cartId}}"
+  class="bg-indigo-500 hover:bg-indigo-600 text-white transition duration-300 ease-in-out font-medium rounded-md text-lg py-2 px-4 inline-flex items-center">
   Cart
 </a>
+<div class="container mx-auto p-6 bg-white rounded-md shadow-md">
+  <div class="flex justify-between items-center border-b pb-4">
+    <h2 class="text-xl font-semibold text-gray-800">User Profile</h2>
+    <button
+      class="px-6 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors duration-200 transform"
+      type="button"
+      onclick="logout()">
 
+      Logout
+    </button>
+  </div>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 pt-4">
+    <div class="space-y-1">
+      <label class="text-sm font-semibold text-gray-600">First Name</label>
+      <div class="flex items-center p-2 bg-gray-100 rounded">
+        <p class="ml-2 text-sm text-gray-700">{{user.first_name}}</p>
+      </div>
+    </div>
+    <div class="space-y-1">
+      <label class="text-sm font-semibold text-gray-600">Last Name</label>
+      <div class="flex items-center p-2 bg-gray-100 rounded">
+        <p class="ml-2 text-sm text-gray-700">{{user.last_name}}</p>
+      </div>
+    </div>
+    <div class="space-y-1">
+      <label class="text-sm font-semibold text-gray-600">Email</label>
+      <div class="flex items-center p-2 bg-gray-100 rounded">
+        <p class="ml-2 text-sm text-gray-700">{{user.email}}</p>
+      </div>
+    </div>
+    <div class="space-y-1">
+      <label class="text-sm font-semibold text-gray-600">Age</label>
+      <div class="flex items-center p-2 bg-gray-100 rounded">
+        <p class="ml-2 text-sm text-gray-700">{{user.age}}</p>
+      </div>
+    </div>
+    <div class="space-y-1">
+      <label class="text-sm font-semibold text-gray-600">Role</label>
+      <div class="flex items-center p-2 bg-gray-100 rounded">
+        <p class="ml-2 text-sm text-gray-700">{{user.role}}</p>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
   {{#each products}}
-    <form
-      class="flex flex-col border border-gray-200 rounded-lg shadow-lg overflow-hidden transform transition-all hover:scale-105 duration-300 ease-in-out"
-      data-product-id="{{this._id}}"
-      data-cart-id="{{../cartId}}"
-      onsubmit="addToCart(event)"
-    >
-      <div class="px-4 py-2 bg-gray-50 border-b">
-        <p class="text-xl font-semibold text-gray-800">{{this.title}}</p>
-      </div>
-      <div class="p-4 flex-grow">
+  <form
+    class="flex flex-col border border-gray-200 rounded-lg shadow-lg overflow-hidden transform transition-all hover:scale-105 duration-300 ease-in-out"
+    data-product-id="{{this._id}}" data-cart-id="{{../cartId}}" onsubmit="addToCart(event)">
+    <div class="px-4 py-2 bg-gray-50 border-b">
+      <p class="text-xl font-semibold text-gray-800">{{this.title}}</p>
+    </div>
+    <div class="p-4 flex-grow">
         <p class="text-gray-600 mb-4">{{this.description}}</p>
         <p class="text-lg font-bold text-green-500">${{this.price}}</p>
+        <p class="text-sm font-semibold text-gray-500">Stock: {{this.stock}}</p>
       </div>
-      <button
-        type="submit"
-        class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-5 rounded-b-lg w-full transition duration-300 ease-in-out"
-      >
-        Add to cart
-      </button>
-    </form>
+    <button type="submit"
+      class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-5 rounded-b-lg w-full transition duration-300 ease-in-out">
+      Add to cart
+    </button>
+  </form>
   {{/each}}
 </div>
 <div class="flex justify-center items-center gap-8 my-8">
-  <a
-    href="{{prevLink}}"
-    class="bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-6 rounded-full font-semibold transition duration-300 ease-in-out"
-  >
+  <a href="{{prevLink}}"
+    class="bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-6 rounded-full font-semibold transition duration-300 ease-in-out">
     &larr; Previous Page
   </a>
-  <a
-    href="{{nextLink}}"
-    class="bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-6 rounded-full font-semibold transition duration-300 ease-in-out"
-  >
+  <a href="{{nextLink}}"
+    class="bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-6 rounded-full font-semibold transition duration-300 ease-in-out">
     Next Page &rarr;
   </a>
 </div>

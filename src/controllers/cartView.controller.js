@@ -4,24 +4,25 @@ export const getCartPage = async (req, res) => {
   try {
     const { cid } = req.params;
     const cart = await cartService.getCartById(cid);
-
+    if (!cart) return res.sendNotFound({ message: "Cart not found" });
     const products = cart.products.map((product) => ({
       title: product.product.title,
       description: product.product.description,
       price: product.product.price,
+      stock: product.product.stock,
       quantity: product.quantity,
     }));
 
-    console.log(products);
-    res.render("cart", {
+    return res.render("cart", {
       title: "Cart",
       products,
       total: cart.products.reduce(
         (acc, product) => acc + product.product.price * product.quantity,
         0,
       ),
+      cartId: cid,
     });
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.sendClientError(error.message);
   }
 };

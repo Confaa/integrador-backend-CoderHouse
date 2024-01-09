@@ -1,4 +1,3 @@
-import { Router } from "express";
 import {
   addCart,
   mockingCarts,
@@ -6,18 +5,18 @@ import {
   getCarts,
   addProductToCart,
   deleteProductToCart,
+  purchaseCart,
 } from "../controllers/cart.controller.js";
+import RouterBase from "./router.js";
 
-// Create Express router
-const router = Router();
-
-router.post("/", addCart);
-router.post("/mocking", mockingCarts);
-router.get("/", getCarts);
-router.get("/:cid", getCartById);
-router.post("/:cid/product/:pid", addProductToCart);
-router.delete("/:cid/product/:pid", deleteProductToCart);
-
-// Export router
-
-export default router;
+export default class CartRouter extends RouterBase {
+  init() {
+    this.post("/", ["USER"], addCart);
+    this.post("/mocking", ["ADMIN"], mockingCarts);
+    this.get("/", ["USER"], getCarts);
+    this.get("/:cid", ["USER"], getCartById);
+    this.post("/:cid/product/:pid", ["USER"], addProductToCart);
+    this.delete("/:cid/product/:pid", ["USER"], deleteProductToCart);
+    this.get("/:cid/purchase", ["USER"], purchaseCart);
+  }
+}

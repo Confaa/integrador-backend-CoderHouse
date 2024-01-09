@@ -18,4 +18,5 @@ export default {
   DB_PASS: process.env.DB_PASS,
   PORT: process.env.PORT,
   MODE: process.env.MODE,
+  JWT_SECRET: process.env.JWT_SECRET,
 };
