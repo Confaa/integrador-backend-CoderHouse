@@ -1,7 +1,7 @@
 import { productService } from "../repositories/index.js";
 import ProductDTO from "../dto/product.dto.js";
 import { generateProducts } from "../utils/faker.utils.js";
-import config from "../config/env.config.js";
+import envConfig from "../config/env.config.js";
 export const getAllProducts = async (req, res) => {
   try {
     let { limit, page, sort, query, value } = req.query;
@@ -37,18 +37,14 @@ export const getAllProducts = async (req, res) => {
       hasPrevPage: result.hasPrevPage,
       hasNextPage: result.hasNextPage,
       prevLink: result.hasPrevPage
-        ? `http://localhost:${config.PORT}/products?limit=${limit}&page=${
-            result.prevPage
-          }${query ? `&query=${query}&value=${value}` : ""}${
-            sort ? `&sort=${sort}` : ""
-          }`
+        ? `${envConfig.API}/products?limit=${limit}&page=${result.prevPage}${
+            query ? `&query=${query}&value=${value}` : ""
+          }${sort ? `&sort=${sort}` : ""}`
         : null,
       nextLink: result.hasNextPage
-        ? `http://localhost:${config.PORT}/products?limit=${limit}&page=${
-            result.nextPage
-          }${query ? `&query=${query}&value=${value}` : ""}${
-            sort ? `&sort=${sort}` : ""
-          }`
+        ? `${envConfig.API}/products?limit=${limit}&page=${result.nextPage}${
+            query ? `&query=${query}&value=${value}` : ""
+          }${sort ? `&sort=${sort}` : ""}`
         : null,
     });
   } catch (error) {
@@ -102,9 +98,14 @@ export const deleteProduct = async (req, res) => {
     if (!pid) {
       throw new Error("Missing pid");
     }
+    const { owner } = await productService.getProductById(pid);
+
+    if (owner !== req.user.email && owner !== "admin") {
+      return res.sendUnauthorized({ message: "Unauthorized" });
+    }
     const result = await productService.deleteProduct(pid);
-    res.sendSuccess({ product: result });
+    return res.sendSuccess({ product: result });
   } catch (error) {
-    res.sendClientError({ message: error.message });
+    return res.sendClientError({ message: error.message });
   }
 };

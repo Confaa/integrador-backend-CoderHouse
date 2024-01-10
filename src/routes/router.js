@@ -1,6 +1,6 @@
 import { Router } from "express";
-import jwt from "jsonwebtoken";
-import config from "../config/env.config.js";
+import UserDTO from "../dto/user.dto.js";
+import { userService } from "../repositories/index.js";
 export default class RouterBase {
   constructor() {
     this.router = Router();
@@ -62,14 +62,6 @@ export default class RouterBase {
   generateCustomResponses(req, res, next) {
     res.sendSuccess = (payload) =>
       res.status(200).json({ status: "success", payload });
-    res.sendSuccessCreated = (payload) =>
-      res.status(201).json({ status: "success", payload });
-    res.sendServerError = (error) =>
-      res.status(500).json({ status: "error", error });
-    res.sendClientError = (error) =>
-      res.status(400).json({ status: "error", error });
-    res.sendNotFound = (error) =>
-      res.status(404).json({ status: "error", error });
     res.sendSuccessWithCookie = (token, payload) => {
       res
         .status(200)
@@ -81,26 +73,52 @@ export default class RouterBase {
 
         .json({ status: "success", payload });
     };
+    res.sendSuccessCreated = (payload) =>
+      res.status(201).json({ status: "success", payload });
+    res.sendClientError = (error) =>
+      res.status(400).json({ status: "error", error });
+    res.sendUnauthorized = (error) =>
+      res.status(403).json({ status: "error", error });
+    res.sendNotFound = (error) =>
+      res.status(404).json({ status: "error", error });
+    res.sendServerError = (error) =>
+      res.status(500).json({ status: "error", error });
     next();
   }
 
   handlePolicies(policies) {
-    return (req, res, next) => {
+    return async (req, res, next) => {
       if (policies[0] === "PUBLIC") return next();
 
       const token =
-        req.originalUrl.includes("api") && req.headers.authorization
+        (req.originalUrl.includes("api") && req.headers.authorization
           ? req.headers.authorization.split(" ")[1]
-          : req.cookies.token;
+          : req.cookies.token) ??
+        (policies[0] === "RECOVERY" && (req.params.token || req.query.token));
       if (!token && policies[0] !== "NOAUTH")
         return res.redirect("/login?failSession=true");
       if (token && policies[0] === "NOAUTH") return res.redirect("/products");
       if (!token && policies[0] === "NOAUTH") return next();
       try {
-        const user = jwt.verify(token, config.JWT_SECRET);
+        const user = UserDTO.verifyJwtToken(token);
+
+        if (!user)
+          return res
+            .status(401)
+            .send({ status: "error", error: "Unauthorized" });
+        if (!user && policies[0] === "RECOVERY")
+          return res.redirect("/forgot-password?failToken=true");
 
         if (!policies.includes(user.role.toUpperCase()))
-          return res.status(403).send({ status: "error", error: "Forbidden" });
+          return res.status(403).redirect("/");
+
+        const userComplete = await userService.getUserByEmail(user.email);
+
+        if (user.role !== userComplete.role || !userComplete)
+          return res
+            .status(403)
+            .clearCookie("token")
+            .redirect("/login?failSession=true");
 
         req.user = user;
         next();

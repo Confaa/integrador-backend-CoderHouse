@@ -10,18 +10,18 @@ import ProductDTO from "../dto/product.dto.js";
 export const addCart = async (req, res) => {
   try {
     const result = await cartService.addCart(new CartDTO(req.body));
-    res.sendSuccessCreated({ cart: result });
+    return res.sendSuccessCreated({ cart: result });
   } catch (error) {
-    res.sendClientError({ message: error.message });
+    return res.sendClientError({ message: error.message });
   }
 };
 
 export const getCarts = async (req, res) => {
   try {
     const result = await cartService.getCarts();
-    res.sendSuccess({ carts: result });
+    return res.sendSuccess({ carts: result });
   } catch (error) {
-    res.sendClientError({ message: error.message });
+    return res.sendClientError({ message: error.message });
   }
 };
 
@@ -30,18 +30,18 @@ export const getCartById = async (req, res) => {
   try {
     const result = await cartService.getCartById(cid);
     if (!result) res.sendNotFound({ message: "Cart not found" });
-    res.sendSuccess({ cart: result });
+    return res.sendSuccess({ cart: result });
   } catch (error) {
-    res.sendClientError({ message: error.message });
+    return res.sendClientError({ message: error.message });
   }
 };
 
 export const mockingCarts = async (req, res) => {
   try {
     await generateCarts();
-    res.sendSuccessCreated({ message: "Carts created" });
+    return res.sendSuccessCreated({ message: "Carts created" });
   } catch (error) {
-    res.sendClientError({ message: error.message });
+    return res.sendClientError({ message: error.message });
   }
 };
 
@@ -50,19 +50,27 @@ export const addProductToCart = async (req, res) => {
     const { quantity } = req.body;
     const { cid, pid } = req.params;
 
+    const product = await productService.getProductById(pid);
+
+    if (req.user.email === product.owner) {
+      return res.sendUnauthorized({
+        message: "Unauthorized, this is your product",
+      });
+    }
+
     const result = await cartService.addProductToCart(cid, pid, quantity ?? 1);
-    res.sendSuccessCreated({ cart: result });
+    return res.sendSuccessCreated({ cart: result });
   } catch (error) {
-    res.sendClientError({ message: error.message });
+    return res.sendClientError({ message: error.message });
   }
 };
 export const deleteProductToCart = async (req, res) => {
   const { cid, pid } = req.params;
   try {
     const result = await cartService.deleteProductToCart(cid, pid);
-    res.sendSuccessCreated({ cart: result });
+    return res.sendSuccessCreated({ cart: result });
   } catch (error) {
-    res.sendClientError({ message: error.message });
+    return res.sendClientError({ message: error.message });
   }
 };
 
@@ -71,9 +79,9 @@ export const updateCart = async (req, res) => {
     const { cid } = req.params;
     const { products } = req.body;
     const result = await cartService.updateCart(cid, products);
-    res.sendSuccess({ cart: result });
+    return res.sendSuccess({ cart: result });
   } catch (error) {
-    res.sendClientError({ message: error.message });
+    return res.sendClientError({ message: error.message });
   }
 };
 
@@ -82,9 +90,9 @@ export const updateProductFromCart = async (req, res) => {
   const { quantity } = req.body;
   try {
     const result = await cartService.updateProductFromCart(cid, pid, quantity);
-    res.sendSuccess({ cart: result });
+    return res.sendSuccess({ cart: result });
   } catch (error) {
-    res.sendClientError({ message: error.message });
+    return res.sendClientError({ message: error.message });
   }
 };
 
@@ -99,8 +107,10 @@ export const purchaseCart = async (req, res) => {
     if (cart.products.length === 0) {
       return res.sendClientError({ message: "Cart is empty" });
     }
-    if(cart.purchased){
-      return res.sendClientError({ message: "Cart already purchased or whitout stock" });
+    if (cart.purchased) {
+      return res.sendClientError({
+        message: "Cart already purchased or whitout stock",
+      });
     }
     const products = cart.products.map((item) => {
       return {
@@ -110,7 +120,7 @@ export const purchaseCart = async (req, res) => {
         _id: item.product._id,
       };
     });
-    
+
     const productsAvailable = [];
     const productsNotAvailable = [];
 
@@ -130,7 +140,9 @@ export const purchaseCart = async (req, res) => {
         );
 
         if (!result) {
-          return res.sendNotFound({ message: `Product not found: ${product._id}` });
+          return res.sendNotFound({
+            message: `Product not found: ${product._id}`,
+          });
         }
       } else if (item.stock < item.quantity) {
         productsNotAvailable.push(item);
@@ -146,7 +158,7 @@ export const purchaseCart = async (req, res) => {
       return res.sendNotFound({ message: "Ticket not found" });
     }
 
-  const response=  await cartService.purchaseCart(cid);
+    const response = await cartService.purchaseCart(cid);
 
     if (!response) {
       return res.sendServerError({ message: "Error" });
@@ -159,7 +171,10 @@ export const purchaseCart = async (req, res) => {
       }
     });
 
-    return res.sendSuccessCreated({ ticket,productsNotAvailable:productsNotAvailable.map((item) => item._id) });
+    return res.sendSuccessCreated({
+      ticket,
+      productsNotAvailable: productsNotAvailable.map((item) => item._id),
+    });
   } catch (error) {
     return res.sendClientError(error.message);
   }

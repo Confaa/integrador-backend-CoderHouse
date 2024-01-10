@@ -10,5 +10,6 @@ export default class ProductDTO {
     this.code = product.code || "Code not found";
     this.stock = product.stock || 0;
     this.category = product.category || "Category not found";
+    this.owner = product.owner || "admin";
   }
 }

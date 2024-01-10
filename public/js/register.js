@@ -21,6 +21,7 @@ const register = async (e) => {
     email: formData.get("email"),
     password: formData.get("password"),
     age: formData.get("age"),
+    role: formData.get("role"),
   };
 
   try {
@@ -33,7 +34,6 @@ const register = async (e) => {
     });
 
     const data = await response.json();
-
     if (response.ok) {
       alert("Registration successful!");
       window.location.href = "/login";

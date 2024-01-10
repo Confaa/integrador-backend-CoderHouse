@@ -5,16 +5,21 @@ import passport from "passport";
 import cookieParser from "cookie-parser";
 import { Server } from "socket.io";
 import initPassport from "./config/passport.config.js";
-import config from "./config/env.config.js";
+import envConfig from "./config/env.config.js";
 import CartRouter from "./routes/cart.router.js";
 import CartViewRouter from "./routes/cartView.router.js";
 import ProductRouter from "./routes/product.router.js";
 import ProductRouterView from "./routes/productView.router.js";
-import UserRouter from "./routes/user.router.js";
-import UserViewRouter from "./routes/userView.router.js";
 import ChatViewRouter from "./routes/chatView.router.js";
 import { getMessages, sendMessage } from "./controllers/chat.controller.js";
 import TicketViewRouter from "./routes/ticketView.router.js";
+import RecoveryRouter from "./routes/recovery.router.js";
+import RecoveryViewRouter from "./routes/recoveryView.router.js";
+import SessionViewRouter from "./routes/sessionView.router.js";
+import SessionRouter from "./routes/session.router.js";
+import UserRouter from "./routes/user.router.js";
+import UserViewRouter from "./routes/userView.router.js";
+import { eq } from "./helpers/eq.helper.js";
 
 // Create Express app
 const app = express();
@@ -34,7 +39,14 @@ app.use(passport.initialize());
 initPassport();
 
 // Handlebars config
-app.engine("handlebars", handlebars.engine());
+app.engine(
+  "handlebars",
+  handlebars.engine({
+    helpers: {
+      eq,
+    },
+  }),
+);
 app.set("view engine", "handlebars");
 app.set("views", "./src/views");
 
@@ -47,18 +59,26 @@ const cartRouter = new CartRouter();
 app.use("/api/carts", cartRouter.getRouter());
 const cartViewRouter = new CartViewRouter();
 app.use("/carts", cartViewRouter.getRouter());
-const userRouter = new UserRouter();
-app.use("/api/sessions", userRouter.getRouter());
-const userViewRouter = new UserViewRouter();
-app.use("/", userViewRouter.getRouter());
+const sessionRouter = new SessionRouter();
+app.use("/api/sessions", sessionRouter.getRouter());
+const sessionViewRouter = new SessionViewRouter();
+app.use("/", sessionViewRouter.getRouter());
 const chatViewRouter = new ChatViewRouter();
 app.use("/", chatViewRouter.getRouter());
 const ticketViewRouter = new TicketViewRouter();
 app.use("/tickets", ticketViewRouter.getRouter());
+const recoveryRouter = new RecoveryRouter();
+app.use("/api/recovery", recoveryRouter.getRouter());
+const recoveryViewRouter = new RecoveryViewRouter();
+app.use("/", recoveryViewRouter.getRouter());
+const userRouter = new UserRouter();
+app.use("/api/users", userRouter.getRouter());
+const userViewRouter = new UserViewRouter();
+app.use("/", userViewRouter.getRouter());
 
 // Connect to database
 try {
-  const db = `mongodb+srv://${config.DB_USER}:${config.DB_PASS}@${config.DB}`;
+  const db = `mongodb+srv://${envConfig.DB_USER}:${envConfig.DB_PASS}@${envConfig.DB}`;
   await mongoose.connect(db);
   console.log("Database connected");
 } catch (error) {
@@ -66,8 +86,8 @@ try {
 }
 
 // Start the server
-const httpServer = app.listen(config.PORT, () => {
-  console.log(`Server running on port ${config.PORT}`);
+const httpServer = app.listen(envConfig.PORT, () => {
+  console.log(`Server running on port ${envConfig.PORT}`);
 });
 
 // Socket.io

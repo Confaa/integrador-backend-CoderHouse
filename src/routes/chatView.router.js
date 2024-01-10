@@ -3,6 +3,6 @@ import RouterBase from "./router.js";
 
 export default class ChatViewRouter extends RouterBase {
   init() {
-    this.get("/chat", ["USER"], getChatPage);
+    this.get("/chat", ["USER", "PREMIUM", "ADMIN"], getChatPage);
   }
 }

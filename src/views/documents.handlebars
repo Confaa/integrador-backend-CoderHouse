@@ -1,0 +1,31 @@
+<div class="flex justify-center items-center min-h-screen">
+  <form
+    id="fileUploadForm"
+    class="m-4 p-6 max-w-sm bg-white rounded-xl shadow-md"
+    onsubmit="uploadFiles(event)"
+  >
+    <div class="flex flex-col mb-4">
+      <label
+        for="fileUpload"
+        class="mb-2 text-sm font-medium text-gray-700"
+      >Cargar Archivos</label>
+      <input
+        type="file"
+        name="files"
+        id="fileUpload"
+        class="border border-gray-300 rounded p-2"
+        multiple
+      />
+    </div>
+
+    <button
+      type="submit"
+      class="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded w-full"
+    >
+      Subir
+    </button>
+    <div id="fileList" class="mt-4">
+    </div>
+  </form>
+</div>
+<script src="/js/documents.js"></script>

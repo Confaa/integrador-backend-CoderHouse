@@ -1,5 +1,5 @@
-import { cartService, productService } from "../repositories/index.js";
-import config from "../config/env.config.js";
+import { productService, userService } from "../repositories/index.js";
+import envConfig from "../config/env.config.js";
 
 export const getProductsPage = async (req, res) => {
   try {
@@ -23,25 +23,21 @@ export const getProductsPage = async (req, res) => {
       sort,
     );
 
-    const cart = await cartService.addCart();
+    const cartUser = await userService.getUserByEmail(req.user.email);
     res.render("products", {
       title: "Products",
       products: result.docs,
       prevLink: result.hasPrevPage
-        ? `http://localhost:${config.PORT}/products?limit=${limit}&page=${
-            result.prevPage
-          }${query ? `&query=${query}&value=${value}` : ""}${
-            sort ? `&sort=${sort}` : ""
-          }`
+        ? `${envConfig.API}/products?limit=${limit}&page=${result.prevPage}${
+            query ? `&query=${query}&value=${value}` : ""
+          }${sort ? `&sort=${sort}` : ""}`
         : null,
       nextLink: result.hasNextPage
-        ? `http://localhost:${config.PORT}/products?limit=${limit}&page=${
-            result.nextPage
-          }${query ? `&query=${query}&value=${value}` : ""}${
-            sort ? `&sort=${sort}` : ""
-          }`
+        ? `${envConfig.API}/products?limit=${limit}&page=${result.nextPage}${
+            query ? `&query=${query}&value=${value}` : ""
+          }${sort ? `&sort=${sort}` : ""}`
         : null,
-      cartId: cart._id,
+      cartId: cartUser._id,
       user: req.user,
     });
   } catch (error) {

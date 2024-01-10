@@ -12,6 +12,7 @@ export const generateProducts = async () => {
       stock: faker.number.int({ min: 0, max: 100 }),
       status: faker.datatype.boolean(),
       category: faker.commerce.department(),
+      owner: "admin",
     });
   }
 };

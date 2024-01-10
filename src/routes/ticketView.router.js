@@ -3,6 +3,6 @@ import RouterBase from "./router.js";
 
 export default class TicketViewRouter extends RouterBase {
   init() {
-    this.get("/:tid", ["PUBLIC"], getTicketPage);
+    this.get("/:tid", ["USER", "PREMIUM", "ADMIN"], getTicketPage);
   }
 }

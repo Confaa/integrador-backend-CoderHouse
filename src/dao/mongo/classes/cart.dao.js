@@ -46,10 +46,7 @@ export class Cart {
   };
   update = async (cid, products) => {
     try {
-      return await cartModel.updateOne(
-        { _id: cid },
-        { $set: { products } },
-      );
+      return await cartModel.updateOne({ _id: cid }, { $set: { products } });
     } catch (error) {
       console.log(error);
     }

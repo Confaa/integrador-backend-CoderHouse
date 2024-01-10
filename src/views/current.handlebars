@@ -1,14 +1,27 @@
 <div class="container mx-auto p-4">
   <div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md">
-    <h1 class="text-2xl font-bold text-gray-900 mb-4">User Current</h1>
-    <div class="space-y-3">
-      <p class="text-gray-600"><strong>First Name:</strong>
-        {{user.first_name}}</p>
-      <p class="text-gray-600"><strong>Last Name:</strong>
-        {{user.last_name}}</p>
-      <p class="text-gray-600"><strong>Age:</strong> {{user.age}}</p>
-      <p class="text-gray-600"><strong>Email:</strong> {{user.email}}</p>
-      <p class="text-gray-600"><strong>Role:</strong> {{user.role}}</p>
+    <h1 class="text-2xl font-bold text-gray-900 mb-6">User Current</h1>
+    <div class="space-y-4">
+      <p class="text-gray-700"><strong>First Name:</strong>
+        <span class="text-gray-600">{{user.first_name}}</span></p>
+      <p class="text-gray-700"><strong>Last Name:</strong>
+        <span class="text-gray-600">{{user.last_name}}</span></p>
+      <p class="text-gray-700"><strong>Age:</strong>
+        <span class="text-gray-600">{{user.age}}</span></p>
+      <p class="text-gray-700"><strong>Email:</strong>
+        <span class="text-gray-600">{{user.email}}</span></p>
+      <p class="text-gray-700"><strong>Role:</strong>
+        <span class="text-gray-600">{{user.role}}</span></p>
+      <p class="text-gray-700"><strong>Last Connection:</strong>
+        <span class="text-gray-600">{{user.last_connection}}</span></p>
+      <button
+        onclick="changeRole(event)"
+        class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300 ease-in-out"
+        data-user-id="{{uid}}"
+      >
+        Change Role
+      </button>
     </div>
   </div>
 </div>
+<script src="/js/current.js"></script>

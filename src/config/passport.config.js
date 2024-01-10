@@ -1,6 +1,6 @@
 import passport from "passport";
 import jwt, { ExtractJwt } from "passport-jwt";
-import config from "./env.config.js";
+import envConfig from "./env.config.js";
 
 const JWTStrategy = jwt.Strategy;
 const initPassport = () => {
@@ -9,7 +9,7 @@ const initPassport = () => {
     new JWTStrategy(
       {
         jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
-        secretOrKey: config.JWT_SECRET,
+        secretOrKey: envConfig.JWT_SECRET,
       },
       async (payload, done) => {
         try {

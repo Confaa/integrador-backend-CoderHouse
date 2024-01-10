@@ -1,19 +1,28 @@
 
-<h1 class="text-3xl font-bold mb-6 text-gray-900">Products</h1>
-<a href="/carts/{{cartId}}"
-  class="bg-indigo-500 hover:bg-indigo-600 text-white transition duration-300 ease-in-out font-medium rounded-md text-lg py-2 px-4 inline-flex items-center">
-  Cart
-</a>
-<div class="container mx-auto p-6 bg-white rounded-md shadow-md">
+<div class="bg-white shadow-md rounded-lg mx-auto p-6 mb-8">
+  <<div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-gray-900">Products</h1>
+    <a href="/carts/{{cartId}}"
+      class="bg-indigo-500 hover:bg-indigo-600 text-white transition duration-300 ease-in-out font-medium rounded-md text-lg py-2 px-4 inline-flex items-center">
+      Cart
+    </a>
+  </div>
   <div class="flex justify-between items-center border-b pb-4">
     <h2 class="text-xl font-semibold text-gray-800">User Profile</h2>
-    <button
-      class="px-6 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors duration-200 transform"
-      type="button"
-      onclick="logout()">
-
-      Logout
-    </button>
+    <div>
+      <a href="/current" 
+        class="px-6 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded transition-colors duration-200 transform mr-4">
+        Current User
+      </a>
+      <a href="/upload-documents"
+        class="px-6 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors duration-200 transform mr-4">
+        Upload Documents
+      </a>
+      <button
+        class="px-6 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors duration-200 transform"
+        type="button"
+        onclick="logout()">Logout</button>
+    </div>
   </div>
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 pt-4">
     <div class="space-y-1">
@@ -67,6 +76,11 @@
     </button>
   </form>
   {{/each}}
+  {{#unless products.length}}
+    <div class="col-span-1 md:col-span-2 lg:col-span-3">
+      <p class="text-center text-gray-800 text-xl">No products available at this time.</p>
+    </div>
+  {{/unless}}
 </div>
 <div class="flex justify-center items-center gap-8 my-8">
   <a href="{{prevLink}}"

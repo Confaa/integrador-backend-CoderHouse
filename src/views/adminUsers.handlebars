@@ -1,0 +1,65 @@
+<div class="container mx-auto p-4">
+  <h2 class="text-2xl font-bold mb-4">User Administration Panel</h2>
+  <div class="overflow-x-auto">
+    <table class="min-w-full leading-normal">
+      <thead>
+        <tr>
+          <th
+            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+            Name
+          </th>
+          <th
+            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+            Email
+          </th>
+          <th
+            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+            Role
+          </th>
+          <th
+            class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+            Last Connection
+          </th>
+          <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each users}}
+        <tr>
+          <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+            <p class="text-gray-900 whitespace-no-wrap">{{this.first_name}}</p>
+          </td>
+          <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+            <p class="text-gray-900 whitespace-no-wrap">{{this.email}}</p>
+          </td>
+          <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+            <p class="text-gray-900 whitespace-no-wrap">{{this.role}}</p>
+          </td>
+          <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+            <p class="text-gray-900 whitespace-no-wrap">{{this.last_connection}}</p>
+          </td>
+          <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm flex">
+            <select class="border border-gray-300 rounded p-2 mr-2" onchange="changeRoleAdmin(event)"
+              data-user-id="{{this.uid}}">
+              <option value="user" {{#if (eq this.role 'user' )}}selected{{/if}}>User</option>
+              <option value="premium" {{#if (eq this.role 'premium' )}}selected{{/if}}>Premium</option>
+              <option value="admin" {{#if (eq this.role 'admin' )}}selected{{/if}}>Admin</option>
+            </select>
+            <button type="button" data-user-id="{{this.uid}}"
+              class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded" onclick="deleteUserAdmin(event)">
+              Delete
+            </button>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+     <button
+    type="button"
+    class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mb-4"
+    onclick="deleteInactiveUsers(event)">
+    Delete Inactive Users
+  </button>
+  </div>
+</div>
+<script src="/js/adminUsers.js"></script>

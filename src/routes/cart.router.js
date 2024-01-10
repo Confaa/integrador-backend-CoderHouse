@@ -11,7 +11,7 @@ import RouterBase from "./router.js";
 
 export default class CartRouter extends RouterBase {
   init() {
-    this.post("/", ["USER"], addCart);
+    this.post("/", ["USER", "PREMIUM", "ADMIN"], addCart);
     this.post("/mocking", ["ADMIN"], mockingCarts);
     this.get("/", ["USER"], getCarts);
     this.get("/:cid", ["USER"], getCartById);
