@@ -38,7 +38,7 @@ const register = async (e) => {
       alert("Registration successful!");
       window.location.href = "/login";
     } else {
-      alert(data.message);
+      alert(data.error.message);
     }
   } catch (error) {
     alert("There was a network error: " + error.message);

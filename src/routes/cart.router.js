@@ -13,10 +13,18 @@ export default class CartRouter extends RouterBase {
   init() {
     this.post("/", ["USER", "PREMIUM", "ADMIN"], addCart);
     this.post("/mocking", ["ADMIN"], mockingCarts);
-    this.get("/", ["USER"], getCarts);
-    this.get("/:cid", ["USER"], getCartById);
-    this.post("/:cid/product/:pid", ["USER"], addProductToCart);
-    this.delete("/:cid/product/:pid", ["USER"], deleteProductToCart);
-    this.get("/:cid/purchase", ["USER"], purchaseCart);
+    this.get("/", ["USER", "PREMIUM", "ADMIN"], getCarts);
+    this.get("/:cid", ["USER", "PREMIUM", "ADMIN"], getCartById);
+    this.post(
+      "/:cid/product/:pid",
+      ["USER", "PREMIUM", "ADMIN"],
+      addProductToCart,
+    );
+    this.delete(
+      "/:cid/product/:pid",
+      ["USER", "PREMIUM", "ADMIN"],
+      deleteProductToCart,
+    );
+    this.get("/:cid/purchase", ["USER", "PREMIUM", "ADMIN"], purchaseCart);
   }
 }

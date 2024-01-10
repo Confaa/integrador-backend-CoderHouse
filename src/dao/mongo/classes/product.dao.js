@@ -3,16 +3,14 @@ import { productModel } from "../models/product.model.js";
 export class Product {
   get = async () => {
     try {
-      const products = await productModel.find();
-      return products;
+      return await productModel.find();
     } catch (error) {
       console.log(error);
     }
   };
   getById = async (pid) => {
     try {
-      const product = await productModel.findById(pid);
-      return product;
+      return await productModel.findById(pid);
     } catch (error) {
       console.log(error);
     }
@@ -20,13 +18,10 @@ export class Product {
   add = async (product) => {
     try {
       const exists = await productModel.findOne({ code: product.code });
-
       if (exists) {
         throw new Error("Product already exists");
       }
-
-      const newProduct = await productModel.create(product);
-      return newProduct;
+      return await productModel.create(product);
     } catch (error) {
       console.log(error);
     }

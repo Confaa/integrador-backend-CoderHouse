@@ -2,6 +2,10 @@ import { productService } from "../repositories/index.js";
 import ProductDTO from "../dto/product.dto.js";
 import { generateProducts } from "../utils/faker.utils.js";
 import envConfig from "../config/env.config.js";
+import { mongo } from "mongoose";
+import CustomError from "../errors/custom.error.js";
+import { generateProductIdErrorInfo } from "../errors/info.js";
+import ErrorCodes from "../errors/enums.js";
 export const getAllProducts = async (req, res) => {
   try {
     let { limit, page, sort, query, value } = req.query;
@@ -55,10 +59,18 @@ export const getAllProducts = async (req, res) => {
 export const getProductById = async (req, res) => {
   try {
     const { pid } = req.params;
+    if (!mongo.isValidObjectId(pid)) {
+      CustomError.createError({
+        name: "Invalid ID",
+        cause: generateProductIdErrorInfo(pid),
+        message: "Invalid ID",
+        code: ErrorCodes.INVALID_PARAM,
+      });
+    }
     const result = await productService.getProductById(pid);
     res.sendSuccess({ product: result });
   } catch (error) {
-    res.sendClientError(error.message);
+    res.sendClientError(error);
   }
 };
 
@@ -74,6 +86,7 @@ export const addProduct = async (req, res) => {
 export const mockingProducts = async (req, res) => {
   try {
     await generateProducts();
+    req.debug("Products mocked");
     res.sendSuccessCreated({ message: "Products created" });
   } catch (error) {
     res.sendClientError({ message: error.message });
@@ -83,20 +96,30 @@ export const mockingProducts = async (req, res) => {
 export const updateProduct = async (req, res) => {
   try {
     const { pid } = req.params;
-    if (!pid) {
-      throw new Error("Missing pid");
+    if (!mongo.isValidObjectId(pid)) {
+      CustomError.createError({
+        name: "Invalid ID",
+        cause: generateProductIdErrorInfo(pid),
+        message: "Invalid ID",
+        code: ErrorCodes.INVALID_PARAM,
+      });
     }
     const result = await productService.updateProduct({ ...req.body, id: pid });
     res.sendSuccess({ product: result });
   } catch (error) {
-    res.sendClientError({ message: error.message });
+    res.sendClientError(error);
   }
 };
 export const deleteProduct = async (req, res) => {
   try {
     const { pid } = req.params;
-    if (!pid) {
-      throw new Error("Missing pid");
+    if (!mongo.isValidObjectId(pid)) {
+      CustomError.createError({
+        name: "Invalid ID",
+        cause: generateProductIdErrorInfo(pid),
+        message: "Invalid ID",
+        code: ErrorCodes.INVALID_PARAM,
+      });
     }
     const { owner } = await productService.getProductById(pid);
 
@@ -106,6 +129,6 @@ export const deleteProduct = async (req, res) => {
     const result = await productService.deleteProduct(pid);
     return res.sendSuccess({ product: result });
   } catch (error) {
-    return res.sendClientError({ message: error.message });
+    return res.sendClientError(error);
   }
 };

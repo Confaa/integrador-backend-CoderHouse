@@ -82,5 +82,5 @@ export default class UserRepository {
     } catch (error) {
       return error;
     }
-  }
+  };
 }

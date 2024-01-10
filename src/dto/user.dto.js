@@ -3,11 +3,11 @@ import { createHash } from "../utils/crypto.utils.js";
 import envConfig from "../config/env.config.js";
 export default class UserDTO {
   constructor(user) {
-    this.first_name = user.first_name;
-    this.last_name = user.last_name;
-    this.email = user.email;
-    this.age = user.age;
-    this.password = createHash(user.password);
+    this.first_name = user.first_name || "first_name";
+    this.last_name = user.last_name || "last_name";
+    this.email = user.email || "email";
+    this.age = user.age || 1;
+    this.password = createHash(user.password) || "password";
     this.cart = user.cart || null;
     this.role = user.role || "admin";
     this.document = user.document || [];

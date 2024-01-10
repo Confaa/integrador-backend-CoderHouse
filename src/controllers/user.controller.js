@@ -17,7 +17,7 @@ export const changeRoleUser = async (req, res) => {
 
     const user = await userService.getUserById(uid);
     const userDTO = new UserDTO(user);
-
+    req.logger.info(`User ${user.email} change role to ${user.role}`);
     return res.sendSuccessWithCookie(userDTO.getJwtToken(), {
       message: "Role changed!",
     });
@@ -101,6 +101,7 @@ export const deleteUserInactives = async (req, res) => {
           }
         }
       }
+      req.logger.warning(`User ${user.email} deleted!`);
     });
     return res.sendSuccess({ message: "Users inactives deleted!" });
   } catch (error) {
@@ -115,7 +116,7 @@ export const changeRoleAdmin = async (req, res) => {
     const result = await userService.changeRoleUser(uid, role);
 
     if (!result) return res.sendClientError({ message: "Role not changed!" });
-
+    req.logger.info(`User ${uid} change role to ${role}`);
     return res.sendSuccess({ message: "Role changed!" });
   } catch (error) {
     return res.sendClientError({ message: error.message });
@@ -128,7 +129,7 @@ export const deleteUserById = async (req, res) => {
     const result = await userService.deleteUserById(uid);
 
     if (!result) return res.sendClientError({ message: "User not deleted!" });
-
+    req.logger.warning(`User ${uid} deleted!`);
     return res.sendSuccess({ message: "User deleted!" });
   } catch (error) {
     return res.sendClientError({ message: error.message });

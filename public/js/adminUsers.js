@@ -16,10 +16,10 @@ const changeRoleAdmin = async (e) => {
   }
 };
 
-const deleteUserAdmin = async(e) => {
+const deleteUserAdmin = async (e) => {
   e.preventDefault();
   const uid = e.target.getAttribute("data-user-id");
-  const response =await fetch(`/api/users/${uid}`, {
+  const response = await fetch(`/api/users/${uid}`, {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
   });
@@ -41,4 +41,4 @@ const deleteInactiveUsers = async (e) => {
   } else {
     alert("Error deleting inactive users");
   }
-}
+};

@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha src/test/**/*.test.js",
+    "test": "mocha ./test/**/*.test.js",
     "start-dev": "nodemon src/app.js --mode dev",
     "start-prod": "nodemon src/app.js --mode prod",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,css,scss,handlebars}\""
@@ -28,12 +28,18 @@
     "nodemon": "^3.0.2",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
-    "socket.io": "^4.7.3"
+    "socket.io": "^4.7.3",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
+    "winston": "^3.11.0"
   },
   "devDependencies": {
+    "chai": "^5.0.0",
     "eslint": "^8.56.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-unused-imports": "^3.0.0",
-    "prettier": "^3.1.1"
+    "mocha": "^10.2.0",
+    "prettier": "^3.1.1",
+    "supertest": "^6.3.3"
   }
 }

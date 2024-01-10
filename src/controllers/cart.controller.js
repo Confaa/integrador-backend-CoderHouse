@@ -7,12 +7,19 @@ import CartDTO from "../dto/cart.dto.js";
 import { generateCarts } from "../utils/faker.utils.js";
 import TicketDTO from "../dto/ticket.dto.js";
 import ProductDTO from "../dto/product.dto.js";
+import mongoose from "mongoose";
+import CustomError from "../errors/custom.error.js";
+import {
+  generateCartIdErrorInfo,
+  generateProductIdErrorInfo,
+} from "../errors/info.js";
+import ErrorCodes from "../errors/enums.js";
 export const addCart = async (req, res) => {
   try {
     const result = await cartService.addCart(new CartDTO(req.body));
     return res.sendSuccessCreated({ cart: result });
   } catch (error) {
-    return res.sendClientError({ message: error.message });
+    return res.sendClientError(error);
   }
 };
 
@@ -28,6 +35,13 @@ export const getCarts = async (req, res) => {
 export const getCartById = async (req, res) => {
   const { cid } = req.params;
   try {
+    if (!mongoose.isValidObjectId(cid)) {
+      CustomError.createError({
+        cause: generateCartIdErrorInfo(cid),
+        message: "Error to get cart by ID",
+        code: ErrorCodes.NOT_FOUND_ERROR,
+      });
+    }
     const result = await cartService.getCartById(cid);
     if (!result) res.sendNotFound({ message: "Cart not found" });
     return res.sendSuccess({ cart: result });
@@ -39,6 +53,7 @@ export const getCartById = async (req, res) => {
 export const mockingCarts = async (req, res) => {
   try {
     await generateCarts();
+    req.debug("Carts created");
     return res.sendSuccessCreated({ message: "Carts created" });
   } catch (error) {
     return res.sendClientError({ message: error.message });
@@ -49,6 +64,23 @@ export const addProductToCart = async (req, res) => {
   try {
     const { quantity } = req.body;
     const { cid, pid } = req.params;
+
+    if (!mongoose.isValidObjectId(cid)) {
+      CustomError.createError({
+        cause: generateCartIdErrorInfo(cid),
+        message: "Error to get cart by ID",
+        code: ErrorCodes.NOT_FOUND_ERROR,
+      });
+    }
+
+    if (!mongoose.isValidObjectId(pid)) {
+      CustomError.createError({
+        name: "Invalid ID",
+        cause: generateProductIdErrorInfo(pid),
+        message: "Invalid ID",
+        code: ErrorCodes.INVALID_PARAM,
+      });
+    }
 
     const product = await productService.getProductById(pid);
 
@@ -61,16 +93,32 @@ export const addProductToCart = async (req, res) => {
     const result = await cartService.addProductToCart(cid, pid, quantity ?? 1);
     return res.sendSuccessCreated({ cart: result });
   } catch (error) {
-    return res.sendClientError({ message: error.message });
+    return res.sendClientError(error);
   }
 };
 export const deleteProductToCart = async (req, res) => {
   const { cid, pid } = req.params;
   try {
+    if (!mongoose.isValidObjectId(cid)) {
+      CustomError.createError({
+        cause: generateCartIdErrorInfo(cid),
+        message: "Error to get cart by ID",
+        code: ErrorCodes.NOT_FOUND_ERROR,
+      });
+    }
+
+    if (!mongoose.isValidObjectId(pid)) {
+      CustomError.createError({
+        name: "Invalid ID",
+        cause: generateProductIdErrorInfo(pid),
+        message: "Invalid ID",
+        code: ErrorCodes.INVALID_PARAM,
+      });
+    }
     const result = await cartService.deleteProductToCart(cid, pid);
     return res.sendSuccessCreated({ cart: result });
   } catch (error) {
-    return res.sendClientError({ message: error.message });
+    return res.sendClientError(error);
   }
 };
 
@@ -78,10 +126,17 @@ export const updateCart = async (req, res) => {
   try {
     const { cid } = req.params;
     const { products } = req.body;
+    if (!mongoose.isValidObjectId(cid)) {
+      CustomError.createError({
+        cause: generateCartIdErrorInfo(cid),
+        message: "Error to get cart by ID",
+        code: ErrorCodes.NOT_FOUND_ERROR,
+      });
+    }
     const result = await cartService.updateCart(cid, products);
     return res.sendSuccess({ cart: result });
   } catch (error) {
-    return res.sendClientError({ message: error.message });
+    return res.sendClientError(error);
   }
 };
 
@@ -89,10 +144,26 @@ export const updateProductFromCart = async (req, res) => {
   const { cid, pid } = req.params;
   const { quantity } = req.body;
   try {
+    if (!mongoose.isValidObjectId(cid)) {
+      CustomError.createError({
+        cause: generateCartIdErrorInfo(cid),
+        message: "Error to get cart by ID",
+        code: ErrorCodes.NOT_FOUND_ERROR,
+      });
+    }
+
+    if (!mongoose.isValidObjectId(pid)) {
+      CustomError.createError({
+        name: "Invalid ID",
+        cause: generateProductIdErrorInfo(pid),
+        message: "Invalid ID",
+        code: ErrorCodes.INVALID_PARAM,
+      });
+    }
     const result = await cartService.updateProductFromCart(cid, pid, quantity);
     return res.sendSuccess({ cart: result });
   } catch (error) {
-    return res.sendClientError({ message: error.message });
+    return res.sendClientError(error);
   }
 };
 
@@ -100,6 +171,14 @@ export const purchaseCart = async (req, res) => {
   const { cid } = req.params;
   const { email } = req.user;
   try {
+    if (!mongoose.isValidObjectId(cid)) {
+      CustomError.createError({
+        cause: generateCartIdErrorInfo(cid),
+        message: "Error to get cart by ID",
+        code: ErrorCodes.NOT_FOUND_ERROR,
+      });
+    }
+
     const cart = await cartService.getCartById(cid);
     if (!cart) {
       return res.sendNotFound({ message: "Cart not found" });
@@ -171,11 +250,12 @@ export const purchaseCart = async (req, res) => {
       }
     });
 
+    req.info(`Cart ${cid} purchased!`);
     return res.sendSuccessCreated({
       ticket,
       productsNotAvailable: productsNotAvailable.map((item) => item._id),
     });
   } catch (error) {
-    return res.sendClientError(error.message);
+    return res.sendClientError(error);
   }
 };

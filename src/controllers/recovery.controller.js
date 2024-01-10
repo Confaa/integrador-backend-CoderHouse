@@ -72,6 +72,7 @@ export const changePassword = async (req, res) => {
     if (!result)
       return res.sendServerError({ message: "Error in update password!" });
 
+    req.logger.warning(`User ${email} change password!`);
     res.sendSuccess({ message: "Password updated successfully!" });
   } catch (error) {
     res.sendClientError({ message: error.message });

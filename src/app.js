@@ -4,6 +4,7 @@ import handlebars from "express-handlebars";
 import passport from "passport";
 import cookieParser from "cookie-parser";
 import { Server } from "socket.io";
+import swaggerUiExpress from "swagger-ui-express";
 import initPassport from "./config/passport.config.js";
 import envConfig from "./config/env.config.js";
 import CartRouter from "./routes/cart.router.js";
@@ -20,6 +21,8 @@ import SessionRouter from "./routes/session.router.js";
 import UserRouter from "./routes/user.router.js";
 import UserViewRouter from "./routes/userView.router.js";
 import { eq } from "./helpers/eq.helper.js";
+import { addLogger } from "./logger/custom.logger.js";
+import specs from "./config/swagger.config.js";
 
 // Create Express app
 const app = express();
@@ -30,6 +33,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // Serve static files
 app.use(express.static("public"));
+
+// Logger
+app.use(addLogger);
 
 // Cookie parser
 app.use(cookieParser());
@@ -49,6 +55,9 @@ app.engine(
 );
 app.set("view engine", "handlebars");
 app.set("views", "./src/views");
+
+// Docs
+app.use("/api-docs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 // Mount routers
 const productRouter = new ProductRouter();
